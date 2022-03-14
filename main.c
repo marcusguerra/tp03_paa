@@ -12,6 +12,7 @@ void leArq(char* frase,char * entrada){
     }
     do {
         ch = fgetc(ptr);
+        if(ch == '\n') continue;
         frase[q] = ch;
         q++;
     } while (ch != EOF);
