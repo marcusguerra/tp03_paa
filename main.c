@@ -12,11 +12,9 @@ void leArq(char* frase,char * entrada){
     }
     do {
         ch = fgetc(ptr);
-        if(ch == '\n') continue;
         frase[q] = ch;
         q++;
     } while (ch != EOF);
-    frase[q]= '#';
     fclose(ptr);
 }
 
@@ -25,9 +23,5 @@ int main()
     char frase[2000];
     char entrada[100] = "D:\\texto.txt";
     leArq(frase, entrada);
-    for(int i=0; i<1500; i++){
-        if(frase[i] == '#') break;
-        printf("%c", frase[i]);
-    }
-
+    printf("%s\n",frase);
 }

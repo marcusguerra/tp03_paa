@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/cotoq/CLionProjects/tp03-PAA/cmake-build-debug/
+cmake_ninja_workdir = C$:/Users/cotoq/CLionProjects/tp03_paa/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target tp03_PAA
 
@@ -49,7 +49,7 @@ cmake_ninja_workdir = C$:/Users/cotoq/CLionProjects/tp03-PAA/cmake-build-debug/
 
 build cmake_object_order_depends_target_tp03_PAA: phony || CMakeFiles/tp03_PAA.dir
 
-build CMakeFiles/tp03_PAA.dir/main.c.obj: C_COMPILER__tp03_PAA_Debug C$:/Users/cotoq/CLionProjects/tp03-PAA/main.c || cmake_object_order_depends_target_tp03_PAA
+build CMakeFiles/tp03_PAA.dir/main.c.obj: C_COMPILER__tp03_PAA_Debug C$:/Users/cotoq/CLionProjects/tp03_paa/main.c || cmake_object_order_depends_target_tp03_PAA
   DEP_FILE = CMakeFiles\tp03_PAA.dir\main.c.obj.d
   FLAGS = -g -std=gnu99
   OBJECT_DIR = CMakeFiles\tp03_PAA.dir
@@ -81,7 +81,7 @@ build tp03_PAA.exe: C_EXECUTABLE_LINKER__tp03_PAA_Debug CMakeFiles/tp03_PAA.dir/
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\cotoq\CLionProjects\tp03-PAA\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.3.2\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\cotoq\CLionProjects\tp03_paa\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.3.2\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -92,7 +92,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\cotoq\CLionProjects\tp03-PAA\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.3.2\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\Users\cotoq\CLionProjects\tp03-PAA -BC:\Users\cotoq\CLionProjects\tp03-PAA\cmake-build-debug"
+  COMMAND = cmd.exe /C "cd /D C:\Users\cotoq\CLionProjects\tp03_paa\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.3.2\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\Users\cotoq\CLionProjects\tp03_paa -BC:\Users\cotoq\CLionProjects\tp03_paa\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -110,7 +110,7 @@ build tp03_PAA: phony tp03_PAA.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/cotoq/CLionProjects/tp03-PAA/cmake-build-debug
+# Folder: C:/Users/cotoq/CLionProjects/tp03_paa/cmake-build-debug
 
 build all: phony tp03_PAA.exe
 
