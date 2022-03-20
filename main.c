@@ -6,7 +6,7 @@
 #include <string.h>
 #include <math.h>
 
-void SetColor(int ForgC){
+void SetColor(int ForgC){ //modifica a cor do texto
      WORD wColor;
      //This handle is needed to get the current background attribute
      HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -20,7 +20,7 @@ void SetColor(int ForgC){
       }
 }
 
-char descodificaChar(char * chave, char c){
+char descodificaChar(char * chave, char c){ //descodifica um char com base numa determinada chave
     if (c >= 65 && c <= 90){
         char retorno = 0;
         for (int i = 0; i < 26; i++){
@@ -49,7 +49,7 @@ void leArq(char* frase,char * entrada){
     fclose(ptr);
 }
 
-int menu(){
+int menu(){ //printa o menu e retorna a opção escolhida
     printf("Digite o numero de acordo com a opcao desejada:\n");
     printf("1. Apresentar o estado atual da criptoanalise;\n");
     printf("2. Fazer analise de frequencia no texto criptografado;\n");
@@ -62,7 +62,7 @@ int menu(){
     return r;
 }
 
-char * chaveToString(char * chave){
+char * chaveToString(char * chave){ //transforma a chave numa string
     char * chaveS = (char *) malloc(sizeof(char)*52);
     strcpy (chaveS, "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
     char str[2] = "\0";
@@ -75,13 +75,13 @@ char * chaveToString(char * chave){
     return chaveS;
 }
 
-void mostrarEstado(char * frase, char * chave){
+void mostrarEstado(char * frase, char * chave){ //mostra o estado atual
     printf("=== Texto criptografado ===\n");
-    printf("%s\n",frase);
+    printf("%s\n",frase); //printa o texto
     printf("=== Chave ===\n");
-    printf("%s\n\n", chaveToString(chave));
+    printf("%s\n\n", chaveToString(chave)); //printa a chave
     printf("=== Texto parcialmente decifrado ===\n");
-    for (int i = 0; i < strlen(frase); i++){
+    for (int i = 0; i < strlen(frase); i++){ //printa o texto parcialmente decifrado(partes decifradas sao mudadas para a coloracao verde)
         if(frase[i] == descodificaChar(chave, frase[i]) || descodificaChar(chave, frase[i]) == 0){
             SetColor(7);
             printf("%c", frase[i]);
@@ -96,21 +96,21 @@ void mostrarEstado(char * frase, char * chave){
 }
 
 void mostrarFrequencia(char * frase){
-    double freq[] = {14.63,1.04,3.88,4.99,12.57,1.02,1.3,1.28,6.18,0.4,0.02,2.87,4.74,5.05,10.73,2.52,1.2,6.53,7.81,4.34,4.63,1.67,0.01,0.21,0.01,0.47};
+    double freq[] = {14.63,1.04,3.88,4.99,12.57,1.02,1.3,1.28,6.18,0.4,0.02,2.87,4.74,5.05,10.73,2.52,1.2,6.53,7.81,4.34,4.63,1.67,0.01,0.21,0.01,0.47}; //frequencia das palavras em portugues
 
     int qnts[26];
     int total = 0;
     for (int i = 0; i < 26; i++)
         qnts[i] = 0;
 
-    for (int i = 0; i < strlen(frase); i++){
+    for (int i = 0; i < strlen(frase); i++){ //soma a quantidade de cada letra
         if (frase[i]-65 >= 0 && frase[i]-65 < 26)
         qnts[frase[i]-65] += 1;
         total += 1;
     }
 
     printf("Letra, Cont., Freq., No portugues: Letra, Freq.\n");
-    for (int i = 0; i < 26; i++){
+    for (int i = 0; i < 26; i++){ //mostra a tabela com cada letra e suas frequencias
         int mi = 0;
         int mi2 = 0;
         for (int j = 1; j < 26; j++){
@@ -127,28 +127,28 @@ void mostrarFrequencia(char * frase){
     }
 }
 
-int shiftAnd(char * frase, char * padrao){
+int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
     int mask[26];
     for (int i = 0; i < 26; i++)
         mask[i] = 0;
-    for (int i = 0; i < strlen(padrao); i++)
+    for (int i = 0; i < strlen(padrao); i++) //inicializa a mascara com seus valores adequados
         mask[padrao[i]-65] += pow(2,strlen(padrao) - i - 1);
     int qnt = 0;
     int state = 0;
-    for (int i = 0; i < strlen(frase); i++){
-        if(frase[i] >= 65 && frase[i] < 90){
-            state = state>>1;
-            state += pow(2,strlen(padrao)-1);
+    for (int i = 0; i < strlen(frase); i++){ //cada passo do algoritmo shift and
+        if(frase[i] >= 65 && frase[i] < 90){ //detecta se e letra
+            state = state>>1; //shift
+            state += pow(2,strlen(padrao)-1); //ligar o primeiro bit
 
-            state = state & mask[frase[i]-65];
+            state = state & mask[frase[i]-65]; //and com a mascara
 
-            if (state % 2 == 1)
+            if (state % 2 == 1) //verifica se o ultimo bit esta ligado
                 qnt += 1;
         }
         else
             state = 0;
     }
-    return qnt;
+    return qnt; //retorna a quantidade de vezes que encontrou o padrao
 }
 
 int main()
