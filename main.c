@@ -1,23 +1,21 @@
 #include <windows.h>
-#include <direct.h>
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
 void SetColor(int ForgC){ //modifica a cor do texto
-     WORD wColor;
-     //This handle is needed to get the current background attribute
-     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-     CONSOLE_SCREEN_BUFFER_INFO csbi;
-     //csbi is used for wAttributes word
+    WORD wColor;
+    //This handle is needed to get the current background attribute
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    //csbi is used for wAttributes word
 
-     if(GetConsoleScreenBufferInfo(hStdOut, &csbi)){
-          //To mask out all but the background attribute, and to add the color
-          wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
-          SetConsoleTextAttribute(hStdOut, wColor);
-      }
+    if(GetConsoleScreenBufferInfo(hStdOut, &csbi)){
+        //To mask out all but the background attribute, and to add the color
+        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
 }
 
 char descodificaChar(char * chave, char c){ //descodifica um char com base numa determinada chave
@@ -105,7 +103,7 @@ void mostrarFrequencia(char * frase){
 
     for (int i = 0; i < strlen(frase); i++){ //soma a quantidade de cada letra
         if (frase[i]-65 >= 0 && frase[i]-65 < 26)
-        qnts[frase[i]-65] += 1;
+            qnts[frase[i]-65] += 1;
         total += 1;
     }
 
@@ -161,7 +159,9 @@ int main()
     scanf(" %s", entrada);
     leArq(frase, entrada);
     int resposta;
-    char chave[26] = "abcdefghijklmnopqrstuvwxyz";
+    char chave[26];
+    for (int i = 0; i < 26; i++)
+        chave[i] = 0;
 
     do {
         resposta = menu();
@@ -196,15 +196,23 @@ int main()
                 scanf("%s", res1);
                 FILE *fp = fopen(res1,"w");
                 fclose(fp);
+
                 fp = fopen(res1,"a+");
-                int i = 0;
-                while(frase[i+1] !='\0') {
-                    fwrite(&frase[i] , 1 , sizeof(char) , fp );
-                    i++;
+
+                for (int i = 0; i < strlen(frase); i++){
+                    if(frase[i] == descodificaChar(chave, frase[i]) || descodificaChar(chave, frase[i]) == 0){
+                        fwrite(&frase[i] , 1 , sizeof(char) , fp );
+                    }
+                    else{
+                        char x;
+                        x = descodificaChar(chave, frase[i]);
+                        fwrite(&x , 1 , sizeof(char) , fp );
+                    }
                 }
                 fclose(fp1);
                 fclose(fp);
                 break;
+
             default:
                 printf("\nOpcao invalida\n");
                 break;
