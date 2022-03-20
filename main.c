@@ -153,16 +153,15 @@ int shiftAnd(char * frase, char * padrao){
 
 int main()
 {
+    char res[100];
+    char res1[100];
     char frase[2000];
     char entrada[100];
-    printf("Digite o arquivo de entrada: ");
+    printf("Digite o arquivo de entrada: \n");
     scanf(" %s", entrada);
     leArq(frase, entrada);
-
     int resposta;
-    char chave[26];
-    for (int i = 0; i < 26; i++)
-        chave[i] = 0;
+    char chave[26] = "abcdefghijklmnopqrstuvwxyz";
 
     do {
         resposta = menu();
@@ -189,6 +188,22 @@ int main()
                 printf("Registrado: %c -> %c\n", a, b);
                 break;
             case 6:
+                printf("Informe o diretorio do arquivo para ser escrita a chave de criptografia:\n");
+                scanf("%s", res);
+                FILE *fp1 = fopen(res,"w");
+                fwrite(chave, 1 , sizeof(chave) , fp1);
+                printf("Informe o diretorio do arquivo para ser escrita a criptoanalise:\n");
+                scanf("%s", res1);
+                FILE *fp = fopen(res1,"w");
+                fclose(fp);
+                fp = fopen(res1,"a+");
+                int i = 0;
+                while(frase[i+1] !='\0') {
+                    fwrite(&frase[i] , 1 , sizeof(char) , fp );
+                    i++;
+                }
+                fclose(fp1);
+                fclose(fp);
                 break;
             default:
                 printf("\nOpcao invalida\n");
