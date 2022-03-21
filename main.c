@@ -125,12 +125,18 @@ void mostrarFrequencia(char * frase){
     }
 }
 
-int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
-    int mask[26];
+void shifAndPre(int mask[26], char * padrao){ //realiza o pre processamento das funções relativas a shift and
     for (int i = 0; i < 26; i++)
         mask[i] = 0;
     for (int i = 0; i < strlen(padrao); i++) //inicializa a mascara com seus valores adequados
         mask[padrao[i]-65] += pow(2,strlen(padrao) - i - 1);
+}
+
+int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
+
+    int mask[26];
+
+    shifAndPre(mask, padrao);
 
     int qnt = 0;
     int state = 0;
@@ -152,19 +158,15 @@ int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
 
 int shiftAndApx(char * frase, char * padrao, int tolerancia, char * chave){
 
+    //inicialização da mascara
+    int mask[26];
+    shifAndPre(mask, padrao);
+
     //tradução do texto
     char texto[2000];
-
     for (int i = 0; i < strlen(frase); i++){
         if(frase[i] == descodificaChar(chave, frase[i]) || descodificaChar(chave, frase[i]) == 0){texto[i] = frase[i];}
         else{texto[i] = descodificaChar(chave, frase[i]);}}
-
-    //inicialização da mascara
-    int mask[26];
-    for (int i = 0; i < 26; i++)
-        mask[i] = 0;
-    for (int i = 0; i < strlen(padrao); i++)
-        mask[padrao[i]-65] += pow(2,strlen(padrao) - i - 1);
 
     //definição de variáveis
     int qnt = 0, state = 0, tol = tolerancia, d = 1;
@@ -185,7 +187,7 @@ int shiftAndApx(char * frase, char * padrao, int tolerancia, char * chave){
 
             d++;
 
-            if (state % 2 == 1){ //verifica se o ultimo bit esta ligado e imprime a palavra e sua localização
+            if (state % 2 == 1){//verifica se o ultimo bit esta ligado e imprime a palavra e sua localização
                 qnt += 1;
                 printf("@[%d, %d):", i-strlen(padrao), i);
                 for (int j = strlen(padrao)-1; j > -1; --j) {
