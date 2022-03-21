@@ -131,6 +131,7 @@ int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
         mask[i] = 0;
     for (int i = 0; i < strlen(padrao); i++) //inicializa a mascara com seus valores adequados
         mask[padrao[i]-65] += pow(2,strlen(padrao) - i - 1);
+
     int qnt = 0;
     int state = 0;
     for (int i = 0; i < strlen(frase); i++){ //cada passo do algoritmo shift and
@@ -145,6 +146,58 @@ int shiftAnd(char * frase, char * padrao){ //detectar padrao com shift and
         }
         else
             state = 0;
+    }
+    return qnt; //retorna a quantidade de vezes que encontrou o padrao
+}
+
+int shiftAndApx(char * frase, char * padrao, int tolerancia, char * chave){
+
+    //tradução do texto
+    char texto[2000];
+
+    for (int i = 0; i < strlen(frase); i++){
+        if(frase[i] == descodificaChar(chave, frase[i]) || descodificaChar(chave, frase[i]) == 0){texto[i] = frase[i];}
+        else{texto[i] = descodificaChar(chave, frase[i]);}}
+
+    //inicialização da mascara
+    int mask[26];
+    for (int i = 0; i < 26; i++)
+        mask[i] = 0;
+    for (int i = 0; i < strlen(padrao); i++)
+        mask[padrao[i]-65] += pow(2,strlen(padrao) - i - 1);
+
+    //definição de variáveis
+    int qnt = 0, state = 0, tol = tolerancia, d = 1;
+
+    //shift and
+    for (int i = 0; i < strlen(texto); i++){
+        if(texto[i] >= 65 && texto[i] < 90){ //detecta se é letra
+            state = state>>1; //shift
+            state += pow(2,strlen(padrao)-1); //liga o primeiro bit
+
+            state = state & mask[texto[i]-65]; //and com a mascara
+
+            //tolerancia de erros
+            if (state == 0){
+                if (tol != 0){
+                    state += pow(2,strlen(padrao) - d);//passa para o proximo estagio
+                    tol --;}}
+
+            d++;
+
+            if (state % 2 == 1){ //verifica se o ultimo bit esta ligado e imprime a palavra e sua localização
+                qnt += 1;
+                printf("@[%d, %d):", i-strlen(padrao), i);
+                for (int j = strlen(padrao)-1; j > -1; --j) {
+                    printf("%c", texto[i-j]);}
+                printf("\n");}
+
+        }
+        else{
+            state = 0;
+            tol = tolerancia;
+            d = 1;}
+
     }
     return qnt; //retorna a quantidade de vezes que encontrou o padrao
 }
@@ -179,6 +232,10 @@ int main()
                 printf("Ocorrencias: %d\n", shiftAnd(frase,padrao));
                 break;
             case 4:
+                printf("Qual o padrao e a tolerancia utilizados?\n> ");
+                int tolerancia;
+                scanf(" %s %d", padrao, &tolerancia);
+                printf("\nOcorrencias: %d\n", shiftAndApx(frase,padrao, tolerancia, chave));
                 break;
             case 5:
                 printf("Informe a letra original, seguida da letra para a qual foi mapeada:\n> ");
